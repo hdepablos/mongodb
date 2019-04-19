@@ -1,0 +1,175 @@
+MongoDb
+    Instalación:
+        https://docs.mongodb.com/v3.6/tutorial/install-mongodb-on-debian/
+
+    Documentación:
+        https://www.youtube.com/watch?v=Apbk83XL8L8
+
+
+    Crear:
+        Inicia la base de datos
+            mongo
+        Muestra las bases de datos
+            show dbs
+        Muestra la base de dato activa
+            db
+        Cambia de base de datos
+            use local
+        Crea la base de dato
+            use prueba
+        Crear usuario
+            db.createUser({
+                user: "hdepablos",
+                pwd: "123",
+                roles: ["read","dbAdmin"]
+            });
+        Crear una colleccion/tabla y a la vez un registro
+            db.clientes.insert(
+                {
+                    firstName: "Héctor",
+                    lastName: "Depablos"
+                }
+            )
+        Buscar all registro en la colleccion
+            db.clientes.find();
+
+        Insertar varios usuarios:
+            db.clientes.insert(
+                [
+                {
+                    firstName: "Héctor",
+                    lastName: "Depablos"
+                },
+                {
+                    firstName: "Marcela",
+                    lastName: "Depablos"
+                },
+                {
+                    firstName: "Ivan",
+                    lastName: "Depablos"
+                },
+                ]
+            )
+        Buscar un registro
+            db.clientes.find({firstName: "Héctor"});
+        Actualizar una propiedad
+            db.clientes.update(
+                {firstName: "Marcela"},
+                {
+                    firstName: "Marcel Elizabeth",
+                    lastName: "Depablos",
+                    sexo: "F",
+                    edad: 40 
+                }
+            )
+        Formato para mostrar identados los objetos.
+            db.clientes.find().pretty();
+
+        Buscar los datos por id
+            db.clientes.find({_id: ObjectId("5cb9018f75e992781715c926")}).pretty();
+
+            db.clientes.update(
+                {   _id: ObjectId("5cb9018f75e992781715c926")},
+                {
+                    firstName: "Héctor Iván",
+                    lastName: "Depablos",
+                    sexo: "M",
+                    edad: 38 
+                }
+            );
+
+        Actualizar ingresando una propiedad/campo
+            db.clientes.update(
+                {   _id: ObjectId("5cb912f968b0e43872e5c940")},
+                {
+                    $set: {edad: 45}
+                }
+            );
+        Actualizar la edad $inc incrementear
+            db.clientes.update(
+                {   _id: ObjectId("5cb912f968b0e43872e5c940")},
+                {
+                    $inc: {edad: 5}
+                }
+            );
+        Eliminar una propiedad
+            db.clientes.update(
+                {   _id: ObjectId("5cb9018f75e992781715c926")},
+                {
+                    $unset: {edad: 0}
+                }
+            );
+
+        Insertar si no existe
+            db.clientes.update(
+                {firstName: "Marcel Elizabeth"},
+                {
+                    firstName: "Marcel Elizabeth",
+                    lastName: "Depablos",
+                    sexo: "F",
+                    edad: 40 
+                }, {upsert: true}
+            );
+
+        Renombrar una propiedad
+            db.clientes.update(
+                {firstName: "Marcel Elizabeth"},
+                {
+                    $rename: {"firstName":"primerNombre"}
+                }
+            );
+
+        delete un registro
+            Por condición y todas las concidencias que cumplan con la condición:
+                db.clientes.remove(
+                    {lastName: "Depablos"}
+                );
+
+            Por id:
+                db.clientes.remove(
+                    {   _id: ObjectId("5cb9018f75e992781715c928")}
+                );
+
+            Solo uno de las concidencias independientemente muchas conincidan con la condición
+                db.clientes.remove(
+                    {lastName: "Depablos"},
+                    {
+                        justOne: true
+                    }
+                );
+
+        Búsqueda con operadores
+            db.clientes.find(
+                {$or: [{"firstName": "Héctor"}, {"firstName": "Ivan"}]}
+            );
+
+
+            Insertar datos para prueba
+
+                db.clientes.insert(
+                    [
+                    {
+                        firstName: "Juan",
+                        lastName: "Depablos",
+                        edad: 24 
+                    },
+                    {
+                        firstName: "Cesar",
+                        lastName: "Depablos",
+                        edad: 35
+                    },
+                    {
+                        firstName: "Julio",
+                        lastName: "Depablos",
+                        edad: 48
+                    },
+                    ]
+                )
+
+
+            Buscar registos con la edad > 44
+                db.clientes.find({edad: {$gt:44}});
+            Buscar registos con la edad < 30
+                db.clientes.find({edad: {$lt:30}});
+            Buscar registos con la edad > 30 and edad < 40
+                db.clientes.find({edad: {$gt:30, $lt:40}});
