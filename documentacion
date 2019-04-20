@@ -17,6 +17,8 @@ MongoDb
             use local
         Crea la base de dato
             use prueba
+        Delete la base de datos
+            db.dropDatabase();
         Crear usuario
             db.createUser({
                 user: "hdepablos",
@@ -173,3 +175,6 @@ MongoDb
                 db.clientes.find({edad: {$lt:30}});
             Buscar registos con la edad > 30 and edad < 40
                 db.clientes.find({edad: {$gt:30, $lt:40}});
+
+
+            
