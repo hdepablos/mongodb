@@ -5,7 +5,6 @@ MongoDb
     Documentación:
         https://www.youtube.com/watch?v=Apbk83XL8L8
 
-
     Crear:
         Inicia la base de datos
             mongo
@@ -168,7 +167,6 @@ MongoDb
                     ]
                 )
 
-
             Buscar registos con la edad > 44
                 db.clientes.find({edad: {$gt:44}});
             Buscar registos con la edad < 30
@@ -177,4 +175,3 @@ MongoDb
                 db.clientes.find({edad: {$gt:30, $lt:40}});
 
 
-            
