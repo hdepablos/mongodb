@@ -1,11 +1,14 @@
 MongoDb
-    Instalación:
+    Instalación y documentación
         https://docs.mongodb.com/v3.6/tutorial/install-mongodb-on-debian/
 
     Documentación:
         https://www.youtube.com/watch?v=Apbk83XL8L8
 
     Crear:
+        Inicia el servicio
+            sudo service mongod start
+                start / restart / stop
         Inicia la base de datos
             mongo
         Muestra las bases de datos
@@ -15,14 +18,16 @@ MongoDb
         Cambia de base de datos
             use local
         Crea la base de dato
-            use prueba
+            use misclientes
         Delete la base de datos
             db.dropDatabase();
+        Limpiar consola
+            cls
         Crear usuario
             db.createUser({
                 user: "hdepablos",
                 pwd: "123",
-                roles: ["read","dbAdmin"]
+                roles: ["readWrite","dbAdmin"]
             });
         Crear una colleccion/tabla y a la vez un registro
             db.clientes.insert(
@@ -169,9 +174,48 @@ MongoDb
 
             Buscar registos con la edad > 44
                 db.clientes.find({edad: {$gt:44}});
-            Buscar registos con la edad < 30
+            Buscar registos con la ($lt) edad < 30
                 db.clientes.find({edad: {$lt:30}});
-            Buscar registos con la edad > 30 and edad < 40
+            Buscar registos con la ($gt) edad > 30 and edad < 40
                 db.clientes.find({edad: {$gt:30, $lt:40}});
+            
+            Buscar datos anidados
+                db.clientes.update(
+                    {firstName: "Julio"},
+                    {
+                        firstName: "Julio",
+                        lastName: "Depablos",
+                        sexo: "M",
+                        edad: 49,
+                        address: {
+                            city: "London"
+                        } 
+                    }
+                )
+                
+                db.clientes.find({'address.city': "London"});
 
+            Buscar por expresión regular
+                db.clientes.find({firstName: {$regex: 'ctor'}});
+            
+            Ordenar datos:
+                Asc
+                    db.clientes.find().sort({firstName: 1}).pretty();
+                Desc
+                    db.clientes.find().sort({firstName: -1});
+            
+            Total de resgistros
+                db.clientes.count();
+
+                Con filtros
+                    db.clientes.find({firstName: {$regex: 'ctor'}}).count();
+            Limit
+                db.clientes.find().limit(2).pretty();
+            
+            Encadenar metodo
+                db.clientes.find({firstName: {$regex: 'ctor'}}).sort({firstName: -1}).pretty();
+
+            Funciones entre las búsquedas
+                db.clientes.find().forEach( (doc) => print(doc.firstName));
+            
 
